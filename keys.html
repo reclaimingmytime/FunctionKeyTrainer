@@ -31,12 +31,16 @@
   }
 
   /* Virtual keyboard */
-  #keyboard {
-    display: grid;
-    grid-template-columns: repeat(12, 50px);
-    gap: 6px;
-    margin-top: 20px;
-  }
+	#keyboard {
+		display: flex;
+		gap: 18px; /* gap between F4/F5 and F8/F9 */
+		margin-top: 20px;
+	}
+
+	.group {
+		display: flex;
+		gap: 6px; /* normal spacing between adjacent keys */
+	}
 
   .key {
     width: 50px;
@@ -97,17 +101,24 @@
     return arr;
   }
 
-  // Build virtual keyboard
-  function buildKeyboard() {
-    keyboard.innerHTML = "";
-    keys.forEach(k => {
-      const div = document.createElement("div");
-      div.className = "key";
-      div.textContent = k;
-      div.dataset.key = k;
-      keyboard.appendChild(div);
-    });
-  }
+	function buildKeyboard() {
+		keyboard.innerHTML = "";
+
+		for (let group = 0; group < 3; group++) {
+		  const groupDiv = document.createElement("div");
+		  groupDiv.className = "group";
+
+		  for (let i = group * 4; i < group * 4 + 4; i++) {
+		    const div = document.createElement("div");
+		    div.className = "key";
+		    div.textContent = keys[i];
+		    div.dataset.key = keys[i];
+		    groupDiv.appendChild(div);
+		  }
+
+		  keyboard.appendChild(groupDiv);
+		}
+	}
 
   function setActiveKey(key) {
     document.querySelectorAll(".key").forEach(el => {
